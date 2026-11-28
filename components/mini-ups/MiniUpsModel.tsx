@@ -46,7 +46,7 @@ function findHighlightRoot(object: Object3D, partId: string): Object3D {
 
 export const MiniUpsModel = forwardRef<MiniUpsHandles, MiniUpsModelProps>(
   function MiniUpsModel({ onHoverChange }, ref) {
-    const { scene } = useGLTF("/mini-ups.glb");
+    const { scene } = useGLTF("/models/mini-ups.glb");
     const root = useMemo(() => scene.clone(true), [scene]);
 
     const lid = useRef<Object3D | null>(null);
@@ -191,4 +191,4 @@ export const MiniUpsModel = forwardRef<MiniUpsHandles, MiniUpsModelProps>(
   },
 );
 
-useGLTF.preload("/mini-ups.glb");
+useGLTF.preload("/models/mini-ups.glb");

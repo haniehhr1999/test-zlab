@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>راهنمای پیاده‌سازی انیمیشن سه‌بعدی Mini DC UPS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #152033;
+      --muted: #4b5b73;
+      --line: #d9e2ef;
+      --card: #f5f8fc;
+      --accent: #0f6cbd;
+      --code-bg: #0f1724;
+      --code-ink: #e8eef8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Vazirmatn", Tahoma, sans-serif;
+      line-height: 1.9;
+      font-size: 12.5pt;
+    }
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 36px 42px 56px;
+    }
+    h1, h2, h3 {
+      line-height: 1.45;
+      margin: 0 0 12px;
+    }
+    h1 {
+      font-size: 26pt;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 17pt;
+      margin-top: 34px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--line);
+      color: #0b3b66;
+    }
+    h3 {
+      font-size: 13.5pt;
+      margin-top: 22px;
+      color: var(--accent);
+    }
+    p { margin: 0 0 12px; }
+    .lead {
+      color: var(--muted);
+      font-size: 12pt;
+      margin-bottom: 22px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 28px;
+    }
+    .chip {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 10.5pt;
+      color: var(--muted);
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin: 14px 0 18px;
+    }
+    .card strong { color: #0b3b66; }
+    ul, ol { padding-right: 22px; margin: 8px 0 16px; }
+    li { margin-bottom: 6px; }
+    code, .mono {
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 10pt;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+    code.inline {
+      background: #eaf0f8;
+      padding: 1px 6px;
+      border-radius: 6px;
+      color: #14375d;
+    }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      border-radius: 12px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 9.5pt;
+      line-height: 1.55;
+      margin: 12px 0 18px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 20px;
+      font-size: 11pt;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: right;
+    }
+    th {
+      background: #eef4fb;
+      color: #0b3b66;
+    }
+    .file {
+      direction: ltr;
+      unicode-bidi: isolate;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 10pt;
+      color: #0b3b66;
+      background: #eaf0f8;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+    .step {
+      counter-increment: step;
+      position: relative;
+      padding-right: 42px;
+      margin: 18px 0;
+    }
+    .steps { counter-reset: step; }
+    .step::before {
+      content: counter(step);
+      position: absolute;
+      right: 0;
+      top: 2px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11pt;
+      font-weight: 700;
+    }
+    .note {
+      border-right: 4px solid var(--accent);
+      background: #f0f7fd;
+      padding: 12px 14px;
+      margin: 14px 0;
+      border-radius: 0 10px 10px 0;
+    }
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10.5pt;
+    }
+    @page {
+      size: A4;
+      margin: 16mm 14mm;
+    }
+    @media print {
+      body { font-size: 11.5pt; }
+      .page { padding: 0; max-width: none; }
+      h2 { break-after: avoid; }
+      pre, .card, table { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>راهنمای پیاده‌سازی انیمیشن سه‌بعدی<br />محصول Mini DC UPS</h1>
+    <p class="lead">
+      این سند توضیح می‌دهد پروژه Next.js شما چطور با کتابخانه‌های
+      Three.js، React Three Fiber و Drei یک مدل سخت‌افزاری را لود می‌کند،
+      انیمیشن Explode می‌سازد، و با هاور روی قطعات اطلاعات نشان می‌دهد.
+    </p>
+
+    <div class="meta">
+      <span class="chip">Next.js 16</span>
+      <span class="chip">React Three Fiber v9</span>
+      <span class="chip">Drei v10</span>
+      <span class="chip">Three.js</span>
+      <span class="chip">مدل: mini-ups.glb</span>
+    </div>
+
+    <div class="card toc">
+      <strong>فهرست مطالب</strong>
+      <ol>
+        <li>ایده کلی: چه چیزی داریم می‌سازیم؟</li>
+        <li>نقش هر کتابخانه</li>
+        <li>ساختار فایل‌های پروژه</li>
+        <li>جریان اجرا از صفحه اصلی تا صحنه سه‌بعدی</li>
+        <li>توضیح فایل‌به‌فایل کد</li>
+        <li>انیمیشن Explode چطور کار می‌کند؟</li>
+        <li>هاور و Tooltip چطور کار می‌کند؟</li>
+        <li>نکات مهم برای تغییر و توسعه</li>
+      </ol>
+    </div>
+
+    <h2>۱. ایده کلی: چه چیزی داریم می‌سازیم؟</h2>
+    <p>
+      به‌جای ساختن شکل‌ها با دست در کد، یک فایل سه‌بعدی آماده به نام
+      <span class="file">mini-ups.glb</span> را در مرورگر نمایش می‌دهیم.
+      این فایل از اسکریپت پایتون <span class="file">build_mini_ups.py</span>
+      ساخته شده و شامل قطعات نام‌گذاری‌شده است؛ مثل درب، باتری، برد شارژر و پورت‌ها.
+    </p>
+    <div class="card">
+      <strong>هدف نهایی صفحه اصلی:</strong>
+      <ul>
+        <li>نمایش مدل واقعی محصول با جزئیات</li>
+        <li>چرخش آهسته خودکار</li>
+        <li>باز و بسته‌شدن قطعات (Exploded View)</li>
+        <li>هاور روی هر قطعه و نمایش نام/توضیح فارسی</li>
+        <li>چرخش دستی با درگ موس (OrbitControls)</li>
+      </ul>
+    </div>
+
+    <h2>۲. نقش هر کتابخانه</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>کتابخانه</th>
+          <th>کارش چیست؟</th>
+          <th>در این پروژه کجا استفاده شد؟</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="inline">three</code></td>
+          <td>موتور سه‌بعدی مرورگر: مش، متریال، نور، دوربین</td>
+          <td>رنگ‌ها، متریال‌ها، پیدا کردن آبجکت‌ها با نام، تغییر موقعیت قطعات</td>
+        </tr>
+        <tr>
+          <td><code class="inline">@react-three/fiber</code></td>
+          <td>پل بین React و Three.js؛ صحنه را مثل JSX می‌نویسید</td>
+          <td><code class="inline">Canvas</code>، <code class="inline">useFrame</code>، eventهای pointer</td>
+        </tr>
+        <tr>
+          <td><code class="inline">@react-three/drei</code></td>
+          <td>ابزارهای آماده روی Fiber</td>
+          <td><code class="inline">useGLTF</code>، <code class="inline">OrbitControls</code>، <code class="inline">Environment</code>، <code class="inline">ContactShadows</code></td>
+        </tr>
+        <tr>
+          <td><code class="inline">next</code></td>
+          <td>فریمورک React برای وب</td>
+          <td>صفحه اصلی App Router و سرو کردن فایل GLB از پوشه <span class="file">public</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>نکته مهم:</strong>
+      React Three Fiber مثل React معمولی است، فقط به‌جای
+      <code class="inline">div</code> و <code class="inline">button</code>
+      با چیزهایی مثل <code class="inline">mesh</code>، <code class="inline">group</code>
+      و <code class="inline">ambientLight</code> کار می‌کنید.
+    </div>
+
+    <h2>۳. ساختار فایل‌های پروژه</h2>
+    <pre>test-animation/
+├── public/
+│   └── mini-ups.glb          ← مدل سه‌بعدی (باید از روت کپی شود)
+├── app/
+│   ├── page.tsx              ← صفحه اصلی؛ فقط صحنه را می‌گذارد
+│   ├── layout.tsx            ← قالب کلی سایت
+│   └── globals.css           ← استایل عمومی
+├── components/mini-ups/
+│   ├── MiniUpsScene.tsx      ← Canvas، نور، انیمیشن، Tooltip
+│   ├── MiniUpsModel.tsx      ← لود GLB، Explode، هاور/هایلایت
+│   └── partInfo.ts           ← دیکشنری نام قطعات به فارسی
+├── build_mini_ups.py         ← سازنده مدل (خارج از رانتایم وب)
+└── mini-ups.glb              ← فایل اصلی مدل در روت پروژه</pre>
+
+    <h2>۴. جریان اجرا از صفحه اصلی تا صحنه سه‌بعدی</h2>
+    <div class="steps">
+      <div class="step">
+        <strong>کاربر صفحه را باز می‌کند</strong>
+        <p><span class="file">app/page.tsx</span> کامپوننت <code class="inline">MiniUpsScene</code> را رندر می‌کند.</p>
+      </div>
+      <div class="step">
+        <strong>Canvas ساخته می‌شود</strong>
+        <p>
+          Fiber یک <code class="inline">&lt;canvas&gt;</code> می‌سازد و حلقه رندر Three.js را راه می‌اندازد.
+          از این لحظه، هر فریم صفحه (حدود ۶۰ بار در ثانیه) می‌تواند انیمیشن را آپدیت کند.
+        </p>
+      </div>
+      <div class="step">
+        <strong>مدل GLB لود می‌شود</strong>
+        <p>
+          <code class="inline">useGLTF("/mini-ups.glb")</code> فایل را از
+          <span class="file">public/mini-ups.glb</span> می‌گیرد و درخت آبجکت‌ها را آماده می‌کند.
+        </p>
+      </div>
+      <div class="step">
+        <strong>هر فریم انیمیشن اجرا می‌شود</strong>
+        <p>
+          داخل <code class="inline">useFrame</code> مقدار Explode محاسبه می‌شود،
+          موقعیت درب/باتری/بردها جابه‌جا می‌شود و LEDها چشمک می‌زنند.
+        </p>
+      </div>
+      <div class="step">
+        <strong>هاور موس</strong>
+        <p>
+          وقتی موس روی یک مش می‌رود، نام قطعه از درخت والدین پیدا می‌شود،
+          توضیح فارسی از <span class="file">partInfo.ts</span> خوانده می‌شود،
+          و یک باکس HTML کنار نشانگر موس نشان داده می‌شود.
+        </p>
+      </div>
+    </div>
+
+    <h2>۵. توضیح فایل‌به‌فایل کد</h2>
+
+    <h3>۵.۱ صفحه اصلی — <span class="file">app/page.tsx</span></h3>
+    <pre>import { MiniUpsScene } from "@/components/mini-ups/MiniUpsScene";
+
+export default function Home() {
+  return (
+    &lt;main className="relative h-dvh w-full overflow-hidden bg-[#0c1118]"&gt;
+      &lt;MiniUpsScene /&gt;
+    &lt;/main&gt;
+  );
+}</pre>
+    <ul>
+      <li><code class="inline">h-dvh</code>: ارتفاع کامل ویوپورت (تمام صفحه).</li>
+      <li>صفحه عمداً خیلی ساده است؛ همه منطق سه‌بعدی داخل کامپوننت صحنه است.</li>
+      <li>رنگ پس‌زمینه تیره با فضای استودیوی محصول هماهنگ است.</li>
+    </ul>
+
+    <h3>۵.۲ دیکشنری قطعات — <span class="file">partInfo.ts</span></h3>
+    <p>
+      این فایل داده است، نه انیمیشن. هر قطعه مهم مدل یک
+      <code class="inline">id</code> (همان نام نود داخل GLB)، یک عنوان فارسی و یک توضیح کوتاه دارد.
+    </p>
+    <pre>export type PartInfo = {
+  id: string;
+  title: string;
+  description: string;
+};
+
+// مثال:
+{
+  id: "Port_DC_OUT",
+  title: "خروجی DC",
+  description: "جک خروجی تغذیه DC دستگاه",
+}</pre>
+    <p><strong>تابع‌های مهم:</strong></p>
+    <ul>
+      <li>
+        <code class="inline">resolvePartInfo(name)</code>:
+        از روی نام یک مش/گروه، بهترین توضیح را پیدا می‌کند.
+        اول نام‌های خاص‌تر را چک می‌کند تا مثلاً
+        <code class="inline">Port_PoE_1_Contact_3</code>
+        به‌اشتباه «کل پورت‌ها» نشود.
+      </li>
+      <li>
+        <code class="inline">resolvePartFromObject(object)</code>:
+        از خود مش به سمت والدین بالا می‌رود تا به گروهی برسد که در دیکشنری تعریف شده
+        (مثل <code class="inline">Output_Buck_Converter</code>).
+      </li>
+    </ul>
+    <div class="note">
+      اگر قطعه جدیدی به مدل اضافه کردید، فقط کافی است یک ردیف به آرایه
+      <code class="inline">PARTS</code> اضافه کنید. نیازی نیست کل انیمیشن را عوض کنید.
+    </div>
+
+    <h3>۵.۳ لود مدل و تعامل — <span class="file">MiniUpsModel.tsx</span></h3>
+    <p>این فایل قلب مدل است.</p>
+
+    <h3>الف) لود و کلون کردن GLB</h3>
+    <pre>const { scene } = useGLTF("/mini-ups.glb");
+const root = useMemo(() => scene.clone(true), [scene]);</pre>
+    <ul>
+      <li><code class="inline">useGLTF</code>: لودر آماده Drei برای glTF/GLB.</li>
+      <li>
+        <code class="inline">clone(true)</code>: یک کپی عمیق از صحنه می‌سازد تا
+        متریال/وضعیت این صفحه، cache سراسری لودر را خراب نکند.
+      </li>
+      <li>
+        فایل باید داخل <span class="file">public/</span> باشد تا با آدرس
+        <code class="inline">/mini-ups.glb</code> در دسترس باشد.
+      </li>
+    </ul>
+
+    <h3>ب) پیدا کردن گروه‌های اصلی برای Explode</h3>
+    <pre>lid.current = root.getObjectByName("Case_Top");
+battery.current = root.getObjectByName("Battery_Pack");
+charger.current = root.getObjectByName("PCB_Charger");
+output.current = root.getObjectByName("PCB_Output");
+ports.current = root.getObjectByName("Ports");</pre>
+    <p>
+      این نام‌ها دقیقاً از ساختار خروجی
+      <span class="file">build_mini_ups.py</span> آمده‌اند.
+      وقتی گروه را جابه‌جا می‌کنید، همه فرزندانش (مثلاً LEDهای روی درب) با آن حرکت می‌کنند.
+    </p>
+
+    <h3>ج) متد خارجی <code class="inline">setExplode</code></h3>
+    <pre>useImperativeHandle(ref, () => ({
+  setExplode(value: number) {
+    const e = value; // بین 0 تا 1
+    lid.current.position.y = e * 0.055;
+    battery.current.position.y = e * 0.028;
+    charger.current.position.x = -e * 0.045;
+    output.current.position.x = e * 0.045;
+    ports.current.position.z = e * 0.038;
+  },
+}));</pre>
+    <ul>
+      <li><code class="inline">0</code> = حالت بسته/مونتاژ شده</li>
+      <li><code class="inline">1</code> = حداکثر بازشدگی Exploded</li>
+      <li>
+        <code class="inline">forwardRef + useImperativeHandle</code>
+        اجازه می‌دهد والد (صحنه) هر فریم این متد را صدا بزند، بدون اینکه کل مدل را با state سنگین re-render کند.
+      </li>
+    </ul>
+
+    <h3>د) چشمک زدن LED</h3>
+    <pre>useFrame((state) => {
+  const t = state.clock.elapsedTime;
+  ledMats.current.forEach((mat, j) => {
+    mat.emissiveIntensity =
+      0.4 + (0.55 + Math.sin(t * 2.4 - j * 0.7) * 0.45) * 0.95;
+  });
+});</pre>
+    <p>
+      <code class="inline">useFrame</code> هر فریم اجرا می‌شود.
+      با <code class="inline">sin</code> شدت نور خودتابش (emissive) را بالا و پایین می‌بریم.
+      فاز متفاوت برای هر LED باعث می‌شود یکی‌یکی چشمک بزنند.
+    </p>
+
+    <h3>ه) هاور، هایلایت و callback</h3>
+    <pre>&lt;primitive
+  object={root}
+  onPointerOver={(event) => {
+    event.stopPropagation();
+    const info = resolvePartFromObject(event.object);
+    applyHighlight(findHighlightRoot(event.object, info.id));
+    onHoverChange(info);
+  }}
+  onPointerOut={() => {
+    clearHighlight();
+    onHoverChange(null);
+  }}
+/&gt;</pre>
+    <ul>
+      <li><code class="inline">primitive</code>: یک آبجکت Three.js آماده را داخل JSX می‌گذارد.</li>
+      <li><code class="inline">onPointerOver/Out</code>: eventهای Fiber روی مش‌ها (با raycasting).</li>
+      <li>
+        <code class="inline">applyHighlight</code>:
+        رنگ emissive قطعه را آبی روشن می‌کند تا کاربر بفهمد روی کدام بخش است.
+      </li>
+      <li>
+        <code class="inline">onHoverChange</code>:
+        اطلاعات را به لایه HTML بیرون Canvas می‌فرستد تا Tooltip ساخته شود.
+      </li>
+    </ul>
+
+    <h3>۵.۴ صحنه، نور و Tooltip — <span class="file">MiniUpsScene.tsx</span></h3>
+
+    <h3>الف) Canvas</h3>
+    <pre>&lt;Canvas
+  camera={{ position: [0.24, 0.16, 0.3], fov: 34, near: 0.01, far: 10 }}
+  dpr={[1, 2]}
+  gl={{ antialias: true, alpha: false }}
+&gt;
+  &lt;SceneContent ... /&gt;
+&lt;/Canvas&gt;</pre>
+    <ul>
+      <li><code class="inline">camera.position</code>: جای دوربین نسبت به مدل (مدل مترمقیاس است، حدود ۱۸ سانتی‌متر).</li>
+      <li><code class="inline">fov</code>: زاویه دید؛ عدد کمتر = زوم سینمایی‌تر.</li>
+      <li><code class="inline">dpr</code>: کیفیت رندر روی صفحه‌های Retina.</li>
+    </ul>
+
+    <h3>ب) نور و محیط</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>کامپوننت</th>
+          <th>کاربرد</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="inline">ambientLight</code></td>
+          <td>نور نرم همه‌جا؛ سایه‌های خیلی سیاه را کم می‌کند</td>
+        </tr>
+        <tr>
+          <td><code class="inline">directionalLight</code></td>
+          <td>نور جهت‌دار مثل نور خورشید/استودیو</td>
+        </tr>
+        <tr>
+          <td><code class="inline">spotLight</code></td>
+          <td>تاکید موضعی روی محصول</td>
+        </tr>
+        <tr>
+          <td><code class="inline">Environment</code></td>
+          <td>انعکاس محیطی HDR برای فلز و پلاستیک واقعی‌تر</td>
+        </tr>
+        <tr>
+          <td><code class="inline">ContactShadows</code></td>
+          <td>سایه نرم زیر محصول؛ حس نشستن روی سطح می‌دهد</td>
+        </tr>
+        <tr>
+          <td><code class="inline">OrbitControls</code></td>
+          <td>درگ برای چرخاندن دوربین دور محصول</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>ج) انیمیشن چرخش و Explode در <code class="inline">AnimatedUps</code></h3>
+    <pre>useFrame((state) => {
+  const t = state.clock.elapsedTime;
+  const cycle = 12;                 // مدت یک دور کامل (ثانیه)
+  const phase = (t % cycle) / cycle; // 0 تا 1
+
+  // timeline:
+  // بسته → باز شدن → توقف → جمع شدن → بسته
+  let e = 0;
+  if (phase &lt; 0.16) e = 0;
+  else if (phase &lt; 0.4) e = (phase - 0.16) / 0.24;
+  else if (phase &lt; 0.62) e = 1;
+  else if (phase &lt; 0.86) e = 1 - (phase - 0.62) / 0.24;
+  else e = 0;
+
+  const smooth = e * e * (3 - 2 * e); // smoothstep
+  model.current?.setExplode(smooth);
+
+  if (root.current && !pauseRef.current) {
+    root.current.rotation.y = t * 0.18;          // چرخش آهسته
+    root.current.position.y = Math.sin(t * 0.9) * 0.003; // شناوری خیلی کم
+  }
+});</pre>
+    <div class="card">
+      <strong>smoothstep چیست؟</strong>
+      <p style="margin:8px 0 0">
+        فرمول <code class="inline">e*e*(3-2*e)</code> حرکت را نرم می‌کند؛
+        یعنی بازشدن/بسته شدن با شتاب نرم شروع و تمام می‌شود، نه خطی و خشک.
+      </p>
+    </div>
+
+    <h3>د) Tooltip HTML بیرون Canvas</h3>
+    <pre>{hover ? (
+  &lt;div
+    className="... باکس کوچک ..."
+    style={{ left: cursor.x + 16, top: cursor.y - 56 }}
+    dir="rtl"
+  &gt;
+    &lt;p&gt;{hover.title}&lt;/p&gt;
+    &lt;p&gt;{hover.description}&lt;/p&gt;
+  &lt;/div&gt;
+) : null}</pre>
+    <ul>
+      <li>چرا بیرون Canvas؟ چون متن فارسی، فونت و استایل Tailwind روی HTML خیلی ساده‌تر و خواناتر است.</li>
+      <li>موقعیت باکس از مختصات موس داخل ظرف صحنه محاسبه می‌شود.</li>
+      <li>وقتی هاور فعال است، چرخش خودکار pause می‌شود تا خواندن راحت‌تر باشد.</li>
+    </ul>
+
+    <h2>۶. انیمیشن Explode چطور کار می‌کند؟</h2>
+    <p>به‌زبان ساده:</p>
+    <ol>
+      <li>ساعت داخلی Three یک عدد زمان می‌دهد: <code class="inline">elapsedTime</code></li>
+      <li>آن را به یک چرخه ۱۲ ثانیه‌ای تبدیل می‌کنیم</li>
+      <li>در هر بخش چرخه، عدد <code class="inline">e</code> بین ۰ و ۱ ساخته می‌شود</li>
+      <li>همان عدد به موقعیت محورهای X/Y/Z گروه‌ها ضرب می‌شود</li>
+    </ol>
+    <table>
+      <thead>
+        <tr>
+          <th>گروه</th>
+          <th>جهت حرکت هنگام Explode</th>
+          <th>چرا؟</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Case_Top</td>
+          <td>بالا (+Y)</td>
+          <td>درب از بدنه جدا شود</td>
+        </tr>
+        <tr>
+          <td>Battery_Pack</td>
+          <td>بالا (+Y) کمتر از درب</td>
+          <td>پک باتری دیده شود</td>
+        </tr>
+        <tr>
+          <td>PCB_Charger</td>
+          <td>چپ (−X)</td>
+          <td>برد شارژر از مرکز خارج شود</td>
+        </tr>
+        <tr>
+          <td>PCB_Output</td>
+          <td>راست (+X)</td>
+          <td>برد خروجی جدا دیده شود</td>
+        </tr>
+        <tr>
+          <td>Ports</td>
+          <td>جلو (+Z)</td>
+          <td>پورت‌ها از پنل جلو بیرون بیایند</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>۷. هاور و Tooltip چطور کار می‌کند؟</h2>
+    <div class="steps">
+      <div class="step">
+        <strong>Raycasting</strong>
+        <p>
+          Fiber از محل موس یک پرتو مجازی به صحنه می‌فرستد و می‌فهمد کدام مثلث/مش زیر نشانگر است.
+        </p>
+      </div>
+      <div class="step">
+        <strong>حل نام قطعه</strong>
+        <p>
+          مش برخوردشده ممکن است جزئی مثل یک پیچ یا پین باشد.
+          با بالا رفتن در درخت والدین، به نام معنادارتر می‌رسیم.
+        </p>
+      </div>
+      <div class="step">
+        <strong>هایلایت</strong>
+        <p>
+          emissive متریال آن گروه موقتاً آبی می‌شود. هنگام خروج موس، مقدار قبلی برمی‌گردد.
+        </p>
+      </div>
+      <div class="step">
+        <strong>نمایش باکس</strong>
+        <p>
+          state هاور در <code class="inline">MiniUpsScene</code> ست می‌شود و یک div فارسی کنار موس ظاهر می‌شود.
+        </p>
+      </div>
+    </div>
+
+    <h2>۸. نکات مهم برای تغییر و توسعه</h2>
+    <div class="card">
+      <strong>اگر مدل را عوض کردید</strong>
+      <ol>
+        <li>فایل جدید را در <span class="file">public/mini-ups.glb</span> کپی کنید</li>
+        <li>نام گروه‌های اصلی Explode را چک کنید</li>
+        <li>در صورت نیاز <span class="file">partInfo.ts</span> را به‌روز کنید</li>
+      </ol>
+    </div>
+    <div class="card">
+      <strong>اگر می‌خواهید Explode دستی شود</strong>
+      <p>
+        به‌جای محاسبه از روی زمان، یک اسلایدر UI بسازید و مقدار ۰ تا ۱ را مستقیم به
+        <code class="inline">setExplode</code> بدهید.
+      </p>
+    </div>
+    <div class="card">
+      <strong>اگر می‌خواهید اسکرول‌محور شود (GSAP/ScrollTrigger)</strong>
+      <p>
+        طبق نکته اولیه پروژه، GSAP فقط وقتی لازم است که روایت سینمایی/اسکرول بخواهید.
+        در آن حالت مقدار Explode را به progress اسکرول وصل می‌کنید.
+      </p>
+    </div>
+    <div class="card">
+      <strong>چرا بعضی کامپوننت‌ها <code class="inline">"use client"</code> دارند؟</strong>
+      <p>
+        چون Canvas، event موس و <code class="inline">useFrame</code> فقط در مرورگر معنا دارند.
+        در Next.js App Router باید این بخش‌ها Client Component باشند.
+      </p>
+    </div>
+
+    <h2>۹. خلاصه یک‌خطی برای به‌خاطر سپردن</h2>
+    <ul>
+      <li><strong>Three.js</strong> = موتور سه‌بعدی</li>
+      <li><strong>Fiber</strong> = نوشتن همان موتور به زبان React</li>
+      <li><strong>Drei</strong> = ابزارهای آماده (لود GLB، کنترل دوربین، سایه، محیط)</li>
+      <li><strong>GLB</strong> = خود محصول با قطعات نام‌دار</li>
+      <li><strong>useFrame</strong> = قلب انیمیشن در هر فریم</li>
+      <li><strong>partInfo</strong> = معنی فارسی هر قطعه برای Tooltip</li>
+    </ul>
+
+    <div class="footer">
+      سند آموزشی پروژه test-animation · Mini DC UPS Product Animation<br />
+      مناسب برای آشنایی اولیه با React Three Fiber در نمایش محصولات سخت‌افزاری
+    </div>
+  </div>
+</body>
+</html>

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Vazirmatn } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const vazirmatn = Vazirmatn({
+  variable: "--font-vazirmatn",
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -13,17 +14,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mini DC UPS · Product Animation",
-  description: "Interactive 3D exploded view of the Mini DC UPS hardware product",
+  title: "ZLab · انیمیشن محصولات",
+  description:
+    "کاتالوگ تعاملی مدل‌های سه‌بعدی و انیمیشن Explode محصولات آزمایشگاه فناوری‌های پیشرفته فناپ",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="fa"
+      dir="rtl"
+      className={`${vazirmatn.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#0c1118] text-slate-100">
+      <body className="min-h-full bg-[#0c1118] text-slate-100">
         {children}
       </body>
     </html>

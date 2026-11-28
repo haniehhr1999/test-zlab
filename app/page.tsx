@@ -1,9 +1,5 @@
-import { MiniUpsScene } from "@/components/mini-ups/MiniUpsScene";
+import { ProductGrid } from "@/components/ProductGrid";
 
 export default function Home() {
-  return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0c1118]">
-      <MiniUpsScene />
-    </main>
-  );
+  return <ProductGrid />;
 }
